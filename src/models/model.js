@@ -1,4 +1,4 @@
-import { generateConfirmationCode } from '../includes/helpers.js';
+import { generateConfirmationCode, monthAbbrev, yenToUsd } from '../includes/helpers.js';
 import { getDb as db } from './db-in-file.js';
 
 // ROUTE MODEL FUNCTIONS
@@ -145,8 +145,14 @@ export const getCompleteRouteDetails = async (routeId) => {
     const endStation = await getStationById(route.endStation);
     const routeSchedules = await getSchedulesByRoute(routeId);
 
+    // Convert month numbers -> abbreviations (Jan, Feb, ...)
+    const operatingMonthsText = Array.isArray(route.operatingMonths)
+        ? route.operatingMonths.map(monthAbbrev).filter(Boolean)
+        : route.operatingMonths;
+
     return {
         ...route,
+        operatingMonths: operatingMonthsText,
         startStationDetails: startStation,
         endStationDetails: endStation,
         schedules: routeSchedules
@@ -166,13 +172,18 @@ export const getTicketOptionsForRoute = async (routeId) => {
     const route = await getRouteById(routeId);
     if (!route) return null;
 
-    return db().ticketClasses.map(tc => ({
-        class: tc.class,
-        name: tc.name,
-        price: route.distance * tc.pricePerKm,
-        amenities: tc.amenities,
-        description: tc.description
-    }));
+    return db().ticketClasses.map(tc => {
+        const yenPrice = route.distance * tc.pricePerKm;
+        const usdPrice = yenToUsd(yenPrice);
+
+        return {
+            class: tc.class,
+            name: tc.name,
+            price: Number(usdPrice.toFixed(2)),
+            amenities: tc.amenities,
+            description: tc.description
+        };
+    });
 };
 
 export const getTicketOptionsForSchedule = async (scheduleId) => {

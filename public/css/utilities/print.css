@@ -1,0 +1,113 @@
+/* public/css/utilities/print.css */
+
+/* Print styles: make confirmation print cleanly on 1 page */
+@media print {
+
+    /* Use the whole page width and remove default page chrome spacing */
+    @page {
+      margin: 0.5in;
+    }
+  
+    html, body {
+      background: white !important;
+      color: black !important;
+    }
+  
+    /* Hide anything not needed on paper */
+    header,
+    nav,
+    .site-nav,
+    .nav,
+    .top-nav,
+    footer,
+    .site-footer,
+    .footer,
+    button,
+    .btn,
+    .print-btn,
+    a.btn,
+    .form-actions,
+    .route-actions,
+    .scenario-tasks,
+    .toast,
+    .modal,
+    .overlay {
+      display: none !important;
+    }
+  
+    /* Only print confirmation content */
+    body * {
+      visibility: hidden;
+    }
+  
+    /* Show only the confirmation area and its children */
+    .confirmation-print,
+    .confirmation-print * {
+      visibility: visible;
+    }
+  
+    /* Put confirmation at the top-left for printing */
+    .confirmation-print {
+      position: static !important;
+      inset: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+  
+      /* prevent weird page breaks */
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  
+    /* Remove card shadows/borders that waste ink */
+    .confirmation-print .card,
+    .confirmation-print .panel,
+    .confirmation-print .box,
+    .confirmation-print .confirmation-card,
+    .confirmation-print .summary-card {
+      box-shadow: none !important;
+      background: white !important;
+    }
+  
+    /* Links: print as normal text, no blue/underline */
+    a,
+    a:visited {
+      color: black !important;
+      text-decoration: none !important;
+    }
+  
+    /* If your confirmation has sections, avoid splitting them */
+    .confirmation-print section,
+    .confirmation-print .section,
+    .confirmation-print .row,
+    .confirmation-print .grid,
+    .confirmation-print .confirmation-details,
+    .confirmation-print .booking-summary {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  
+    /* Tighten spacing a bit but DO NOT shrink fonts */
+    .confirmation-print h1,
+    .confirmation-print h2,
+    .confirmation-print h3 {
+      margin: 0 0 0.4rem 0 !important;
+    }
+  
+    .confirmation-print p,
+    .confirmation-print li {
+      margin: 0 0 0.25rem 0 !important;
+    }
+  
+    .confirmation-print .spacer,
+    .confirmation-print .divider {
+      margin: 0.4rem 0 !important;
+    }
+  
+    /* If there are large hero images, hide them */
+    .confirmation-print img.hero,
+    .confirmation-print .hero,
+    .confirmation-print .banner {
+      display: none !important;
+    }
+  }  

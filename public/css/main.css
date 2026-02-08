@@ -11,6 +11,9 @@
 @import 'utilities/routes.css' layer(utilities);
 @import 'utilities/scenarios.css' layer(utilities);
 
+/* ALWAYS import print LAST so it wins */
+@import 'utilities/print.css' layer(utilities);
+
 @import 'components/content-grid.css' layer(components);
 @import 'components/columns-grid.css' layer(components);
 
